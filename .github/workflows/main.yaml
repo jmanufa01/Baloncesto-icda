@@ -36,9 +36,11 @@ jobs:
   qa:
     needs: test
     runs-on: self-hosted
+    continue-on-error: true
     steps:
       - name: calidad-codigo
-        run: echo "calidad-codigo"
+        run: |
+            mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -Dsonar.qualitygate.wait=true -Dsonar.login=ADMIN -Dsonar.password=ADMIN
   deploy:
     needs: qa
     runs-on: ubuntu-latest
