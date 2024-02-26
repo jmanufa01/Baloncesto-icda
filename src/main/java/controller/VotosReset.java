@@ -25,8 +25,8 @@ public class VotosReset extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
-            HttpSession s = req.getSession(true);
             bd.resetVotos();
+            res.sendRedirect(res.encodeRedirectURL("index.html"));
             logger.info("Votos reseteados");
         }catch (Exception e){
             logger.info(ERROR + e.getMessage());

@@ -57,17 +57,21 @@ public class ModeloDatos {
         return (existe);
     }
 
-    public void actualizarJugador(String nombre) {
+    public int actualizarJugador(String nombre) {
         try {
             set = con.createStatement();
             set.executeUpdate("UPDATE Jugadores SET votos = votos + 1 WHERE nombre " + " LIKE '%" + nombre + "%'");
+            rs = set.executeQuery("SELECT * FROM Jugadores WHERE nombre LIKE '%" + nombre + "%'");
+            int votos = rs.getInt("votos");
             rs.close();
             set.close();
+            return votos;
         } catch (Exception e) {
             // No modifica la tabla
             logger.info("No modifica la tabla");
             logger.info(ERROR + e.getMessage());
         }
+        return 0;
     }
 
     public void insertarJugador(String nombre) {

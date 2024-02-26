@@ -64,4 +64,46 @@ creado una nueva rama llamada "feat/REQ-1-Votos-a-0" para realizar los cambios.
 
 ![img_3.png](img_3.png)
 
+Para realizar el reseteo de votos, actualizamos la clase ModeloDatos.java añadiendo una sentencia
+SQL que actualice los votos a 0.
+
+```java
+    public void resetVotos(){
+        try {
+            set = con.createStatement();
+            set.executeUpdate("UPDATE Jugadores SET votos = 0");
+            rs.close();
+            set.close();
+        } catch (Exception e) {
+            // No modifica la tabla
+            logger.info("No modifica la tabla");
+            logger.info("El error es: " + e.getMessage());
+        }
+    }
+```
+
+En el archivo index.html, añadimos un botón para realizar el reseteo de votos.
+
+```html
+    <form action="resetVotos" method="post">
+        <input type="submit" value="Resetear Votos">
+    </form>
+```
+
+Y conectamos el servlet en el archivo web.xml.
+
+```xml
+    <servlet>
+        <servlet-name>ResetVotos</servlet-name>
+        <servlet-class>es.iespuertodelacruz.jmfranqueado.baloncesto.controlador.ResetVotos</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetVotos</servlet-name>
+        <url-pattern>/resetVotos</url-pattern>
+    </servlet-mapping>
+```
+Tras pulsar el botón comprobamos que funciona correctamente:
+
+![img_5.png](img_5.png)
+
 
