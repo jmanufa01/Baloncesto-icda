@@ -12,8 +12,7 @@
         <ul>
             <c:forEach var="item" items="${jugadores}">
                 <li>
-                    <span>${item.nombre}</span>
-                    <span>${item.votos}</span>
+                    <span class="voto">${item.nombre} - ${item.votos}</span>
                 </li>
             </c:forEach>
         </ul>

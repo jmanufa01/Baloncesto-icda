@@ -25,7 +25,7 @@ Author : Roberto Barchino (aplicacion original)
             <img src="Tavares.jpg" alt="Tavares"/>
             <p><input type="radio" name="R1" value="Tavares">Tavares</p>
             <br>
-            <p><input type="radio" name="R1" value="Otros">Otro
+            <p><input id="otro-input" type="radio" name="R1" value="Otros">Otro
                 <input type="text" size="20" name="txtOtros"></p>
             <p>
                 <input type="submit" name="B1" value="Votar">
@@ -33,11 +33,11 @@ Author : Roberto Barchino (aplicacion original)
         </form>
 
         <form action="reset" method="POST">
-            <button type="submit">Reiniciar Votos</button>
+            <button id="votos-a-cero-button" type="submit">Reiniciar Votos</button>
         </form>
 
         <form action="ver-votos" method="POST">
-            <button type="submit">Ver Votos</button>
+            <button id="ver-votos-button" type="submit">Ver Votos</button>
         </form>
 </body>
 </html>
