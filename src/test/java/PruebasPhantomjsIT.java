@@ -57,6 +57,7 @@ class PruebasPhantomjsIT
         driver.findElement(By.id("otro-input")).click();
         driver.findElement(By.name("txtOtros")).sendKeys("Pau Gasol");
         driver.findElement(By.name("B1")).click();
+        driver.navigate().to("http://localhost:8080/Baloncesto");
         driver.findElement(By.id("ver-votos-button")).click();
         driver.findElements(By.className("voto")).forEach(voto -> {
             String[] votoSplit = voto.getText().split("-");
