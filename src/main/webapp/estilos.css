@@ -1,6 +1,20 @@
 body {
     color: white;
     background-color: darkblue;
+    font-size: 10px;
+}
+
+body h1{
+    text-align: center;
+}
+
+body p {
+    text-align: left;
+}
+
+body img {
+    width: 100px;
+    height: 67px;
 }
 
 .resultado {
