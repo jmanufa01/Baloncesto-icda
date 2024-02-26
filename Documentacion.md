@@ -34,7 +34,17 @@ steps:
 ```
 
 Este trabajo será prácticamente igual que el de deploy, pero no será necesaria la 
-aprovación manual para desplegar en pre-producción.
+aprovación manual para desplegar en pre-producción. 
+
+Ahora le añadimos al job "deploy" que
+espere a que el job "stage" termine para poder ejecutarse. Esto tiene sentido ya que si hay algún 
+error en pre-producción, no tendría sentido desplegar en producción.
+
+```yaml
+  deploy:
+    needs: stage
+    runs-on: ubuntu-latest
+```
 
 ## Creación Milestone
 
