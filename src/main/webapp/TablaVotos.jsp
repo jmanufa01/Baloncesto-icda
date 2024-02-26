@@ -11,7 +11,7 @@
       <br />Muchas gracias <%=nombreP%> por su voto
       <br />
       <br />
-      <a href="index.html"> Ir al comienzo</a>
+      <a id="enlace-home" href="index.html"> Ir al comienzo</a>
   </body>
 </html>
 
