@@ -22,6 +22,7 @@ public class VotosReset extends HttpServlet {
         bd.abrirConexion();
     }
 
+    
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
