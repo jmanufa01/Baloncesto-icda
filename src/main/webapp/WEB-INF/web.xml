@@ -3,13 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
     <servlet>
         <servlet-name>Acb</servlet-name>
-        <servlet-class>Acb</servlet-class>
+        <servlet-class>controller.Acb</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Acb</servlet-name>
         <url-pattern>/Acb</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>VotosReset</servlet-name>
+        <servlet-class>controller.VotosReset</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VotosReset</servlet-name>
+        <url-pattern>/reset</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

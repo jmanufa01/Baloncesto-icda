@@ -6,12 +6,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PruebasPhantomjsIT
+class PruebasPhantomjsIT
 {
     private static WebDriver driver=null;
 
     @Test
-    public void tituloIndexTest()
+    void tituloIndexTest()
     {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setJavascriptEnabled(true);
