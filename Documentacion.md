@@ -102,8 +102,69 @@ Y conectamos el servlet en el archivo web.xml.
         <url-pattern>/resetVotos</url-pattern>
     </servlet-mapping>
 ```
-Tras pulsar el botón comprobamos que funciona correctamente:
+Vemos que el botón aparece en la página principal de la aplicación.
+
+![img_7.png](img_7.png)
+
+Tras pulsar el botón comprobamos que se han reseteado los votos correctamente.
 
 ![img_5.png](img_5.png)
+
+Con respecto a la prueba unitaria, he modificado el archivo ModeloDatosTest.java añadiendo
+una nueva consulta a la hora de actualizar el voto, obteniendo el voto actual y devolviéndolo, y hacemos un Mock de 
+esa clase en el test, para que simular la respuesta retornando el valor siguiente.
+
+```java
+public int actualizarJugador(String nombre) {
+    try {
+        set = con.createStatement();
+        set.executeUpdate("UPDATE Jugadores SET votos = votos + 1 WHERE nombre " + " LIKE '%" + nombre + "%'");
+        rs = set.executeQuery("SELECT * FROM Jugadores WHERE nombre LIKE '%" + nombre + "%'");
+        int votos = rs.getInt("votos");
+        rs.close();
+        set.close();
+        return votos;
+    } catch (Exception e) {
+        // No modifica la tabla
+        logger.info("No modifica la tabla");
+        logger.info(ERROR + e.getMessage());
+    }
+    return 0;
+}
+
+@Test
+public void testActualizarJugador() {
+        logger.info("Prueba de actualizarJugador");
+        ModeloDatos modeloDatosMock = Mockito.mock(ModeloDatos.class);
+        String jugador = "Rudy";
+        int votosAntes = 5;
+        Mockito.when(modeloDatosMock.actualizarJugador(jugador)).thenReturn(votosAntes + 1);
+        assertEquals(votosAntes + 1, modeloDatosMock.actualizarJugador(jugador));
+}
+```
+
+Tras realizar el commit, en el job "build" comprobamos que los 2 tests pasan correctamente.
+
+![img_6.png](img_6.png)
+
+Ahora realizamos el merge de la rama "feat/REQ-1-Votos-a-0" a "main" y comprobamos que el despliegue funciona correctamente.
+
+![img_8.png](img_8.png)
+
+Vemos que se ha desplegado correctamente en pre-producción. Revisamos que esté todo bien y aprobamos el despliegue en producción.
+
+![img_9.png](img_9.png)
+
+![img_10.png](img_10.png)
+
+Una vez finalizado el primer requerimiento, actualizamos las tareas en el tablero, cerrando las tareas finalizadas. Quedando así el
+milestone:
+
+![img_11.png](img_11.png)
+
+## REQ-2: Ver Votos
+
+El resto de requerimientos lo haremos en otra rama llamada "feat/REQ-2-Ver-Votos".
+
 
 

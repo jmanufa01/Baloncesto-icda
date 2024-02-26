@@ -20,6 +20,14 @@
         <servlet-name>VotosReset</servlet-name>
         <url-pattern>/reset</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>VerVotos</servlet-name>
+        <servlet-class>controller.VerVotos</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VerVotos</servlet-name>
+        <url-pattern>/ver-votos</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

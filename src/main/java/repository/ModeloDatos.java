@@ -1,6 +1,10 @@
 package repository;
 
+import model.Jugador;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static constants.AppConstants.ERROR;
@@ -99,6 +103,30 @@ public class ModeloDatos {
             logger.info("El error es: " + e.getMessage());
         }
     }
+
+    public List<Jugador> obtenerJugadores() {
+        try {
+            set = con.createStatement();
+            rs = set.executeQuery("SELECT * FROM Jugadores");
+            List<Jugador> jugadores = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                int votos = rs.getInt("votos");
+                Jugador jugador = new Jugador(id, nombre, votos);
+                jugadores.add(jugador);
+            }
+            rs.close();
+            set.close();
+            return jugadores;
+        } catch (Exception e) {
+            // No lee de la tabla
+            logger.info("No lee de la tabla");
+            logger.info(ERROR + e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
 
     public void cerrarConexion() {
         try {
