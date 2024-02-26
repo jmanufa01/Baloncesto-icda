@@ -5,14 +5,13 @@ import repository.ModeloDatos;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
-class ModeloDatosTest {
+public class ModeloDatosTest {
 
     private final Logger logger = Logger.getLogger(ModeloDatos.class.getName());
 
     @Test
-    void testExisteJugador() {
+    public void testExisteJugador() {
         logger.info("Prueba de existeJugador");
         String nombre = "";
         ModeloDatos instance = new ModeloDatos();
@@ -23,7 +22,7 @@ class ModeloDatosTest {
     }
 
     @Test
-    void testActualizarJugador() {
+    public void testActualizarJugador() {
         logger.info("Prueba de actualizarJugador");
         ModeloDatos modeloDatosMock = Mockito.mock(ModeloDatos.class);
         String jugador = "Rudy";
