@@ -4,7 +4,7 @@
   <head>
     <title>Votaci&oacute;n mejor jugador liga ACB</title>
   </head>
-  <body class="resultado">
+  <body>
     <h1>Votos</h1>
 
     <ul>

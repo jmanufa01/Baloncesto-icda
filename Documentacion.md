@@ -7,7 +7,10 @@ sobre el proyecto de la práctica 5.
 
 ## Índice
 - [Práctica Final](#práctica-final)
-    - [Trabajo "stage"](#trabajo-stage)
+  - [Trabajo "stage"](#trabajo-stage)
+  - [Creación Milestone](#creación-milestone)
+  - [REQ-1: Votos a 0](#req-1-votos-a-0)
+  - [REQ-2: Ver Votos](#req-2-ver-votos)
 
 
 ## Trabajo "stage"
@@ -166,5 +169,166 @@ milestone:
 
 El resto de requerimientos lo haremos en otra rama llamada "feat/REQ-2-Ver-Votos".
 
+En primer lugar, vamos a crear una clase modelo que utilizaremos para mapear los datos de la consulta SQL a una clase, 
+de esta forma, nos crearemos una lista de jugadores y los incluiremos en el archivo .jsp.
 
+```java
+public class Jugador {
+    private int id;
+    private String nombre;
+    private int votos;
 
+    public Jugador(int id, String nombre, int votos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.votos = votos;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getVotos() {
+        return votos;
+    }
+
+    public void setVotos(int votos) {
+        this.votos = votos;
+    }
+}
+```
+Y creamos la función obtenerJugadores() en la clase ModeloDatos.java que nos devolverá una lista de jugadores.
+
+```java
+    public List<Jugador> obtenerJugadores() {
+        try {
+            set = con.createStatement();
+            rs = set.executeQuery("SELECT * FROM Jugadores");
+            List<Jugador> jugadores = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                int votos = rs.getInt("votos");
+                Jugador jugador = new Jugador(id, nombre, votos);
+                jugadores.add(jugador);
+            }
+            rs.close();
+            set.close();
+            return jugadores;
+        } catch (Exception e) {
+            // No lee de la tabla
+            logger.info("No lee de la tabla");
+            logger.info(ERROR + e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+```
+
+Tras definir la función en el repositorio, creamos un nuevo servlet llamado "VerVotos" que incluirá la lista de jugadores en el archivo .jsp.
+
+```java
+    @Override
+    public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        try {
+            bd.resetVotos();
+            res.sendRedirect(res.encodeRedirectURL("index.html"));
+            logger.info("Votos reseteados");
+        }catch (Exception e){
+            logger.info(ERROR + e.getMessage());
+        }
+    }
+```
+
+Una vez hecho esto, crearemos un nuevo archivo llamado "VerVotos.jsp", que mediante la librería JSTL, 
+nos permitirá incluir código HTML junto con código Java.
+
+1. Añadimos la librería JSTL en el archivo pom.xml.
+
+```xml
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+```
+
+2. Creamos el archivo "VerVotos.jsp" en la carpeta "webapp" y le añadimos el código para mostrar los votos.
+
+```html
+    <ul>
+        <ul>
+            <c:forEach var="item" items="${jugadores}">
+                <li>
+                    <span class="voto">${item.nombre} - ${item.votos}</span>
+                </li>
+            </c:forEach>
+        </ul>
+    </ul>
+```
+
+Si vamos a la página "Ver Votos" de la aplicación, vemos que se muestran los votos de los jugadores.
+
+![img_12.png](img_12.png)
+
+Por último, creamos las pruebas funcionales PF-A y PF-B, que mediante PhantomJS, pulsarán los botones de la aplicación buscándolos por id y comprobarán que se han reseteado los votos y que se muestran correctamente.
+
+```java
+    @Test
+    void verVotosACeroTest()
+            {
+            DesiredCapabilities caps = new DesiredCapabilities();
+            caps.setJavascriptEnabled(true);
+            caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"/usr/bin/phantomjs");
+            caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new
+            String[] {"--web-security=no", "--ignore-ssl-errors=yes"});
+            driver = new PhantomJSDriver(caps);
+            driver.navigate().to("http://localhost:8080/Baloncesto");
+            driver.findElement(By.id("votos-a-cero-button")).click();
+            driver.findElement(By.id("ver-votos-button")).click();
+            driver.findElements(By.className("voto")).forEach(voto -> assertEquals("0", voto.getText().split("-")[1].trim()));
+            }
+
+    @Test
+    void votarOtroTest() {
+          DesiredCapabilities caps = new DesiredCapabilities();
+          caps.setJavascriptEnabled(true);
+          caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,"/usr/bin/phantomjs");
+          caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new
+          String[] {"--web-security=no", "--ignore-ssl-errors=yes"});
+          driver = new PhantomJSDriver(caps);
+          driver.navigate().to("http://localhost:8080/Baloncesto");
+          driver.findElement(By.id("otro-input")).click();
+          driver.findElement(By.name("txtOtros")).sendKeys("Pau Gasol");
+          driver.findElement(By.id("ver-votos-button")).click();
+          driver.findElements(By.className("voto")).forEach(voto -> {
+              String[] votoSplit = voto.getText().split("-");
+              if (votoSplit[0].contains("Pau Gasol")) {
+                assertEquals("1", votoSplit[1].trim());
+              }
+          });
+    }
+```
+
+Finalmente, si accedemos al los jobs de GitHub, comprobamos que las pruebas pasan correctamente.
+
+![img_13.png](img_13.png)
+
+![img_14.png](img_14.png)
+
+Para concluir con la práctica, mergeamos la rama "feat/REQ-2-Ver-Votos" a "main" y comprobamos que el despliegue funciona correctamente. Tras esto, cerramos las tareas en el tablero y finalizamos el milestone.
+
+![img_15.png](img_15.png)
+
+![img_16.png](img_16.png)
